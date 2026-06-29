@@ -19,4 +19,8 @@
 - 密码：123456
 
 ## 部署
-推送到 GitHub 后，在 Settings → Pages 中启用 GitHub Pages（source: main branch, root folder）。
+## 访问地址
+https://bridge236.github.io/teacher_lei/
+
+## 部署
+推送到 GitHub 后，在 Settings → Pages 中启用 GitHub Pages（source: master branch, root folder）。
