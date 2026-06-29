@@ -186,7 +186,7 @@ function togglePwd() {
 // 检查是否已登录
 (function() {
   if (localStorage.getItem('bdw_logged_in') === 'true') {
-    location.href = 'dashboard.html';
+    location.href = 'roll.html';
   }
 })();
 
@@ -215,7 +215,7 @@ function doLogin() {
 
     localStorage.setItem('bdw_logged_in', 'true');
     localStorage.setItem('bdw_user_email', email);
-    location.href = 'dashboard.html';
+    location.href = 'roll.html';
   }, 400);
 }
 
