@@ -1260,8 +1260,15 @@
             var students = BdwStudents.getAll(classId);
             names = students.map(function(s) { return s.name; });
             studentIds = students.map(function(s) { return s.id; });
-            calledNames = new Set();
-            history = [];
+            // 从 localStorage 加载点名记录
+            var records = BdwRecords.getAll(classId);
+            history = records.map(function(r) {
+                return {
+                    name: r.student_name,
+                    time: new Date(r.rolled_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                };
+            });
+            calledNames = new Set(records.map(function(r) { return r.student_name; }));
             lastSelectedName = '';
 
             if (names.length === 0) {
@@ -1465,15 +1472,18 @@
         ];
 
         function triggerEasterEgg() {
-            if (!lastSelectedName) {
+            var display = document.getElementById('displayName');
+            var name = display.classList.contains('selected') ? display.textContent.trim() : (lastSelectedName || '');
+            if (!name || name === '全部点完！' || display.querySelector('.display-placeholder')) {
                 showToast('请先点名再开彩蛋哦~', 'info');
                 return;
             }
             var item = easterEggItems[Math.floor(Math.random() * easterEggItems.length)];
-            showEasterModal(item);
+            showEasterModal(item, name);
         }
 
-        function showEasterModal(item) {
+        function showEasterModal(item, name) {
+            name = name || lastSelectedName || '';
             var existing = document.getElementById('easterModalOverlay');
             if (existing) existing.remove();
             var overlay = document.createElement('div');
@@ -1485,7 +1495,7 @@
             overlay.innerHTML = '<div class="easter-modal">' +
                 '<div class="easter-icon">' + item.icon + '</div>' +
                 '<div class="easter-title" style="color:' + typeColor + '">' + typeLabel + '彩蛋</div>' +
-                '<div class="easter-person"> ⭐' + escHtml(lastSelectedName) + '⭐</div>' +
+                '<div class="easter-person"> ⭐' + escHtml(name) + '⭐</div>' +
                 '<div class="easter-content">' + item.text + '</div>' +
                 '<div class="easter-actions"><button class="easter-btn easter-btn-close" onclick="closeEasterModal()">知道了</button></div>' +
                 '</div>';
