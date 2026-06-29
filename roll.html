@@ -1013,7 +1013,7 @@
         var studentIds = [];
         var currentClassId = null;
         var calledNames = new Set();
-        var history = [];
+        var rollHistory = [];
         var isRolling = false;
         var rollInterval = null;
         var lastSelectedName = '';
@@ -1244,7 +1244,7 @@
 
             if (!classId) {
                 names = []; studentIds = [];
-                calledNames = new Set(); history = [];
+                calledNames = new Set(); rollHistory = [];
                 lastSelectedName = '';
                 document.getElementById('startBtn').disabled = true;
                 document.getElementById('easterBtn').disabled = true;
@@ -1262,7 +1262,7 @@
             studentIds = students.map(function(s) { return s.id; });
             // 从 localStorage 加载点名记录
             var records = BdwRecords.getAll(classId);
-            history = records.map(function(r) {
+            rollHistory = records.map(function(r) {
                 return {
                     name: r.student_name,
                     time: new Date(r.rolled_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
@@ -1315,13 +1315,13 @@
         function renderHistory() {
             var list = document.getElementById('historyList');
             var hint = document.getElementById('historyEmptyHint');
-            if (history.length === 0) {
+            if (rollHistory.length === 0) {
                 list.innerHTML = '';
                 hint.style.display = 'block';
                 return;
             }
             hint.style.display = 'none';
-            list.innerHTML = history.map(function(item, i) {
+            list.innerHTML = rollHistory.map(function(item, i) {
                 return '<li><span class="history-index">#' + (i + 1) + '</span><span class="history-name">' + escHtml(item.name) + '</span><span class="history-time">' + item.time + '</span></li>';
             }).join('');
         }
@@ -1331,7 +1331,7 @@
             var called = calledNames.size;
             document.getElementById('displayCount').textContent = total > 0 ? '当前名单人数：' + total + ' | 已点名：' + called : '';
             document.getElementById('nameCountBadge').textContent = total + '人';
-            document.getElementById('historyCountBadge').textContent = history.length + '次';
+            document.getElementById('historyCountBadge').textContent = rollHistory.length + '次';
             var display = document.getElementById('displayName');
             var placeholder = display.querySelector('.display-placeholder');
             if (total > 0 && placeholder && !display.classList.contains('selected') && !display.classList.contains('rolling')) {
@@ -1359,7 +1359,7 @@
 
         function resetCalledStatus() {
             calledNames.clear();
-            history = [];
+            rollHistory = [];
             lastSelectedName = '';
             document.getElementById('easterBtn').disabled = true;
             renderStudentChips();
@@ -1444,7 +1444,7 @@
             lastSelectedName = selectedName;
             document.getElementById('easterBtn').disabled = false;
             calledNames.add(selectedName);
-            history.push({
+            rollHistory.push({
                 name: selectedName,
                 time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
             });
