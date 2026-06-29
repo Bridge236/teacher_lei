@@ -22,15 +22,15 @@ function _bdwSave(key, val) {
   localStorage.setItem('bdw_' + key, JSON.stringify(val));
 }
 
-// ----- 种子数据：23历史1班 39人 -----
-var BDW_SEED_CLASS = {
+// ----- 种子数据：23历史1班 39人 + 23历史2班 38人 -----
+var BDW_SEED_CLASS_1 = {
   id: 'seed-23history1',
   name: '23历史1班',
   is_default: true,
   created_at: '2026-06-29T09:00:00.000Z'
 };
 
-var BDW_SEED_STUDENTS = [
+var BDW_SEED_STUDENTS_1 = [
   '代如瑶','董梓瀛','高佳洁','谷润桐','霍夏苗',
   '冀星','李润泽','刘栐均','刘丰赫','刘涵',
   '刘寒逸','刘金','刘雨釩','刘紫琦','吕晓丹',
@@ -41,19 +41,42 @@ var BDW_SEED_STUDENTS = [
   '张钰淇','郑思嘉','朱鑫河','闫鑫月'
 ];
 
+var BDW_SEED_CLASS_2 = {
+  id: 'seed-23history2',
+  name: '23历史2班',
+  is_default: false,
+  created_at: '2026-06-29T09:30:00.000Z'
+};
+
+var BDW_SEED_STUDENTS_2 = [
+  '白子震','陈畅','崔远洋','杜伊琳','杜子怡',
+  '郭佳顺','郭媛','韩雨轩','景宏斌','李锦昌',
+  '李进辉','李思雨','李心琦','李皓熙','刘长永',
+  '刘格莹','刘宏帅','路子墨','施宇杰','苏晓轩',
+  '孙文权','唐奕鍇','田佳莹','田一彤','王璐',
+  '王璐璐','谢鑫','许东亮','薛赟','杨佳姿',
+  '姚一冰','展浩然','张雨杭','赵家莹','郑童语',
+  '窦烨杭','薛智洪','王晗'
+];
+
 function _bdwEnsureSeed() {
-  if (!_bdwLoad('_seeded_v2')) {
+  if (!_bdwLoad('_seeded_v3')) {
     // 种子班级
-    _bdwSave('classes', [BDW_SEED_CLASS]);
-    // 种子学生
-    var students = BDW_SEED_STUDENTS.map(function(name) {
-      return { id: bdwUuid(), name: name, class_id: BDW_SEED_CLASS.id, created_at: BDW_SEED_CLASS.created_at };
+    _bdwSave('classes', [BDW_SEED_CLASS_1, BDW_SEED_CLASS_2]);
+    // 种子学生 - 1班
+    var students1 = BDW_SEED_STUDENTS_1.map(function(name) {
+      return { id: bdwUuid(), name: name, class_id: BDW_SEED_CLASS_1.id, created_at: BDW_SEED_CLASS_1.created_at };
     });
-    _bdwSave('students_' + BDW_SEED_CLASS.id, students);
-    // 初始化记录
-    _bdwSave('records_' + BDW_SEED_CLASS.id, []);
+    _bdwSave('students_' + BDW_SEED_CLASS_1.id, students1);
+    _bdwSave('records_' + BDW_SEED_CLASS_1.id, []);
+    // 种子学生 - 2班
+    var students2 = BDW_SEED_STUDENTS_2.map(function(name) {
+      return { id: bdwUuid(), name: name, class_id: BDW_SEED_CLASS_2.id, created_at: BDW_SEED_CLASS_2.created_at };
+    });
+    _bdwSave('students_' + BDW_SEED_CLASS_2.id, students2);
+    _bdwSave('records_' + BDW_SEED_CLASS_2.id, []);
     // 标记已种子
-    _bdwSave('_seeded_v2', true);
+    _bdwSave('_seeded_v3', true);
   }
 }
 
