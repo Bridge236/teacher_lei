@@ -158,8 +158,10 @@ body::after{width:350px;height:350px;background:rgba(165,214,167,0.1);bottom:-80
 
 <script>
 // ===== 硬编码账号密码 =====
-var VALID_ACCOUNT = '981020530@qq.com';
-var VALID_PASSWORD = '123456';
+var VALID_ACCOUNTS = [
+  { email: '981020530@qq.com', password: '123456' },
+  { email: '123456@163.com',   password: '123456' }
+];
 
 function clearEmail() {
   var input = document.getElementById('email');
@@ -206,7 +208,8 @@ function doLogin() {
   err.classList.remove('show');
 
   setTimeout(function() {
-    if (email !== VALID_ACCOUNT || password !== VALID_PASSWORD) {
+    var matched = VALID_ACCOUNTS.some(function(a) { return a.email === email && a.password === password; });
+    if (!matched) {
       btn.classList.remove('loading');
       btn.disabled = false;
       showErr('账号或密码错误，请重试');

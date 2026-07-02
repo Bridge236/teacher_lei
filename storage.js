@@ -56,11 +56,11 @@ var BDW_SEED_STUDENTS_2 = [
   '孙文权','唐奕鍇','田佳莹','田一彤','王璐',
   '王璐璐','谢鑫','许东亮','薛赟','杨佳姿',
   '姚一冰','展浩然','张雨杭','赵家莹','郑童语',
-  '窦烨杭','薛智洪','王晗'
+  '窦烨杭','薛智洪','王晗','孙毓果','刘思含'
 ];
 
 function _bdwEnsureSeed() {
-  if (!_bdwLoad('_seeded_v3')) {
+  if (!_bdwLoad('_seeded_v4')) {
     // 种子班级
     _bdwSave('classes', [BDW_SEED_CLASS_1, BDW_SEED_CLASS_2]);
     // 种子学生 - 1班
@@ -76,7 +76,7 @@ function _bdwEnsureSeed() {
     _bdwSave('students_' + BDW_SEED_CLASS_2.id, students2);
     _bdwSave('records_' + BDW_SEED_CLASS_2.id, []);
     // 标记已种子
-    _bdwSave('_seeded_v3', true);
+    _bdwSave('_seeded_v4', true);
   }
 }
 
